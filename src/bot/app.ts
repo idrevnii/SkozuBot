@@ -14,7 +14,7 @@ export async function createBot() {
 
   bot.on("callback_query", callbackRoute);
 
-  bot.catch((err: Error) => console.log(err));
+  bot.catch((err: Error) => console.error(err));
 
   const { telegram: tg } = bot;
   tg.callApi("getUpdates", { offset: -1 })
