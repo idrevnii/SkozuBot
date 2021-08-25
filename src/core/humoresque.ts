@@ -24,7 +24,6 @@ export async function processHumoresque({
         : humor.slice(Math.floor((humor.length / 100) * args[index]));
     }
   });
-  console.log(cuttedHumoresques);
   return sendHumoresqueMessage(
     chatId,
     cuttedHumoresques.join(" "),
