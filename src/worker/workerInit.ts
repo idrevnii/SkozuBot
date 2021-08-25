@@ -8,7 +8,7 @@ const worker = new Worker("./src/worker/worker.js", {
 });
 
 worker.on("message", (result) => {
-  console.log(result);
+  console.log(result, "main thread");
 });
 
 export function addTaskToQueue(task: ITask) {

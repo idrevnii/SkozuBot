@@ -1,4 +1,5 @@
 export interface ITask {
   type: "humoresque";
-  url: string;
+  chatId: number;
+  args?: number[];
 }

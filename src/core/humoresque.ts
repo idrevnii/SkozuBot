@@ -19,5 +19,5 @@ import { addTaskToQueue } from "../worker/workerInit";
 // }
 
 export async function getCustomHumoresque(args: number[]) {
-  addTaskToQueue({ type: "humoresque", url: "" });
+  addTaskToQueue({ type: "humoresque", chatId: 123, args });
 }
