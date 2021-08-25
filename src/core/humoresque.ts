@@ -7,6 +7,10 @@
 //   }
 // }
 
+import { getHumoresqueKeyboard } from "../bot/keyboard";
+import { sendHumoresqueMessage } from "../bot/send";
+import { getPairRandomNumberFromRange } from "../misc/utils";
+import { IHumoresquesResult, ITask } from "../worker/models";
 import { addTaskToQueue } from "../worker/workerInit";
 
 // export async function getCustomHumoresque(args: number[]) {
@@ -20,4 +24,25 @@ import { addTaskToQueue } from "../worker/workerInit";
 
 export async function getCustomHumoresque(args: number[]) {
   addTaskToQueue({ type: "humoresque", chatId: 123, args });
+}
+
+export async function processHumoresque({
+  chatId,
+  humoresques,
+  args,
+}: IHumoresquesResult) {
+  const fixedHumoresques = humoresques
+    .map((hum) => (hum.split(" ").length > 40 ? undefined : hum))
+    .filter(Boolean);
+  const randomNums = getPairRandomNumberFromRange(0, fixedHumoresques.length);
+  const cuttedHumoresques = randomNums.map((num, index) => {
+    const humor = fixedHumoresques[num];
+    if (humor) {
+      return index === 0
+        ? humor.slice(0, Math.floor((humor.length / 100) * num))
+        : humor.slice(Math.floor((humor.length / 100) * num));
+    }
+  });
+  console.log(cuttedHumoresques);
+  return sendHumoresqueMessage(chatId, cuttedHumoresques.join(" "), "ploho");
 }

@@ -1,5 +1,6 @@
 import { Worker } from "worker_threads";
-import { ITask } from "./models";
+import { processHumoresque } from "../core/humoresque";
+import { IHumoresquesResult, ITask } from "./models";
 
 const worker = new Worker("./src/worker/worker.js", {
   workerData: {
@@ -8,7 +9,9 @@ const worker = new Worker("./src/worker/worker.js", {
 });
 
 worker.on("message", (result) => {
-  console.log(result, "main thread");
+  if (result.type === "humoresque") {
+    processHumoresque(result as IHumoresquesResult);
+  }
 });
 
 export function addTaskToQueue(task: ITask) {

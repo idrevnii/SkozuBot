@@ -3,3 +3,10 @@ export interface ITask {
   chatId: number;
   args?: number[];
 }
+
+export interface IHumoresquesResult {
+  type: "humoresque";
+  chatId: number;
+  humoresques: string[];
+  args: number[];
+}

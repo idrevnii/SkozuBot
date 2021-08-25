@@ -3,9 +3,11 @@ import Telegraf from "telegraf";
 import { IContext } from "./models";
 import { commandsRoute } from "./routes/commands";
 
+export let bot: Telegraf<IContext>;
+
 export async function createBot() {
   // @ts-ignore
-  const bot = new Telegraf<IContext>(process.env.BOT_TOKEN);
+  bot = new Telegraf<IContext>(process.env.BOT_TOKEN);
 
   bot.on("text", commandsRoute);
 

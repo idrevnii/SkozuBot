@@ -6,7 +6,12 @@ const humoresques = new Bull("humoresques");
 
 humoresques.process(async (job, done) => {
   const result = await getHumoresquesFromRandomPage();
-  done(undefined, { chatId: job.data.chatId, humoresques: result });
+  done(undefined, {
+    type: job.data.type,
+    chatId: job.data.chatId,
+    args: job.data.args,
+    humoresques: result,
+  });
 });
 
 humoresques.on("completed", (job, result) => {
