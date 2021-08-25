@@ -7,6 +7,6 @@ export interface ITask {
 export interface IHumoresquesResult {
   type: "humoresque";
   chatId: number;
-  humoresques: string[];
+  humoresques: string[][];
   args: number[];
 }

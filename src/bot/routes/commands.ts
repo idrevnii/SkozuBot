@@ -27,8 +27,8 @@ export const commandsRoute = new Router<IContext>(({ message }) => {
   };
 });
 
-commandsRoute.on("humoresque", async ({ state, reply }) => {
-  if (state.args) {
+commandsRoute.on("humoresque", async ({ state, reply, chat }) => {
+  if (state.args && chat?.id) {
     const numberArgs = state.args
       .slice(0, 2)
       .map((arg) => (isNaN(+arg) ? 0 : +arg));
@@ -40,7 +40,7 @@ commandsRoute.on("humoresque", async ({ state, reply }) => {
       const correctArgs = state.args.length === 0 ? [50, 50] : numberArgs;
       console.log(correctArgs);
       await reply("Correct!");
-      const humoresque = await getCustomHumoresque(correctArgs);
+      const humoresque = await getCustomHumoresque(correctArgs, chat.id);
       // await reply(humoresque);
     } else {
       await reply("Wrong numbers!");
