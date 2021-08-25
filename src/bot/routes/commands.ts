@@ -1,4 +1,5 @@
 import { Router } from "telegraf";
+import { getCustomHumoresque } from "../../core/humoresque";
 import { IContext } from "../models";
 
 export const commandsRoute = new Router<IContext>(({ message }) => {
@@ -39,6 +40,8 @@ commandsRoute.on("humoresque", async ({ state, reply }) => {
       const correctArgs = state.args.length === 0 ? [50, 50] : numberArgs;
       console.log(correctArgs);
       await reply("Correct!");
+      const humoresque = await getCustomHumoresque(correctArgs);
+      // await reply(humoresque);
     } else {
       await reply("Wrong numbers!");
     }
