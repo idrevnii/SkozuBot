@@ -19,10 +19,11 @@ export const callbackRoute = new Router<IContext>(({ callbackQuery }) => {
   };
 });
 
-callbackRoute.on("humoresque", async ({ chat, state }) => {
+callbackRoute.on("humoresque", async ({ chat, state, answerCbQuery }) => {
   if (chat?.id && state.args) {
     const numArgs = state.args.map((arg) => +arg);
     const humoresque = await getCustomHumoresque(numArgs, chat.id);
+    answerCbQuery();
     console.log(`Reqeusted humoresque to chat: ${chat.id}`);
   }
 });

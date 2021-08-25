@@ -1,6 +1,7 @@
 require("dotenv").config();
 import Telegraf from "telegraf";
 import { IContext } from "./models";
+import { callbackRoute } from "./routes/callbackQuery";
 import { commandsRoute } from "./routes/commands";
 
 export let bot: Telegraf<IContext>;
@@ -10,6 +11,8 @@ export async function createBot() {
   bot = new Telegraf<IContext>(process.env.BOT_TOKEN);
 
   bot.on("text", commandsRoute);
+
+  bot.on("callback_query", callbackRoute);
 
   bot.catch((err: Error) => console.log(err));
 

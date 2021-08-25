@@ -10,5 +10,6 @@ export async function sendHumoresqueMessage(
   text: string,
   callbackData: string
 ) {
+  console.log(`Humoresque sended to chat: ${chatId}`);
   return sendMessage(chatId, text, getHumoresqueKeyboard(callbackData));
 }
