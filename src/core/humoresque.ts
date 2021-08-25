@@ -25,5 +25,9 @@ export async function processHumoresque({
     }
   });
   console.log(cuttedHumoresques);
-  return sendHumoresqueMessage(chatId, cuttedHumoresques.join(" "), "ploho");
+  return sendHumoresqueMessage(
+    chatId,
+    cuttedHumoresques.join(" "),
+    `humoresque:${args[0]}:${args[1]}`
+  );
 }

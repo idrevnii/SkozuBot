@@ -38,15 +38,15 @@ commandsRoute.on("humoresque", async ({ state, reply, chat }) => {
       numberArgs.length === 0
     ) {
       const correctArgs = state.args.length === 0 ? [50, 50] : numberArgs;
-      console.log(correctArgs);
-      await reply("Correct!");
       const humoresque = await getCustomHumoresque(correctArgs, chat.id);
-      // await reply(humoresque);
+      console.log(`Reqeusted humoresque to chat: ${chat.id}`);
     } else {
-      await reply("Wrong numbers!");
+      await reply(
+        "Неправильные пропорции юморески! Пропорция должна быть больше нуля и меньше 100"
+      );
     }
   } else {
-    await reply("Something went wrong!");
+    await reply("Что-то пошло не так. Попробуй еще раз");
   }
 });
 
