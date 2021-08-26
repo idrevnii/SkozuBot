@@ -1,5 +1,6 @@
 require("dotenv").config();
 import Telegraf from "telegraf";
+const rateLimit = require("telegraf-ratelimit");
 import { IContext } from "./models";
 import { callbackRoute } from "./routes/callbackQuery";
 import { commandsRoute } from "./routes/commands";
@@ -9,6 +10,18 @@ export let bot: Telegraf<IContext>;
 export async function createBot() {
   // @ts-ignore
   bot = new Telegraf<IContext>(process.env.BOT_TOKEN);
+
+  bot.use(
+    rateLimit({
+      window: 3000,
+      limit: 1,
+      // @ts-ignore
+      onLimitExceeded: ({ reply, from }) => {
+        reply(`@${from.username} перестань флудить!`);
+        console.log(`Flood from: ${from.id}`);
+      },
+    })
+  );
 
   bot.on("text", commandsRoute);
 
