@@ -61,7 +61,7 @@ commandsRoute.on("sabbath", ({ reply }) => {
   if (remainingDays === 0) {
     reply("Шаббат шалом!");
   } else {
-    reply(`Еще ${remainingDays} до шаббата :(`);
+    reply(`Еще ${remainingDays} дня до шаббата :(`);
   }
 });
 
