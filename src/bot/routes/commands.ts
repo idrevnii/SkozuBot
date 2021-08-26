@@ -72,14 +72,10 @@ commandsRoute.on(
       const id = message.reply_to_message.from.id;
       // @ts-ignore
       const title = message.reply_to_message.text;
-      const subtitle = message.text || "";
+      const subtitle = "";
       const { photos } = await telegram.getUserProfilePhotos(id, 0, 1);
-      console.log(photos);
-      console.log(photos[0]);
-      const photoId = photos[0][0].file_id;
+      const photoId = photos[0][photos[0].length - 1].file_id;
       const photoLink = await telegram.getFileLink(photoId);
-      console.log(photoLink);
-      console.log(title, subtitle);
       const demotivator = await createDemotivator(photoLink, title, subtitle);
       console.log(demotivator);
       console.log(typeof demotivator);

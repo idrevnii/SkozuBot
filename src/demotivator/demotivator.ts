@@ -4,7 +4,7 @@
 
 import { createCanvas, loadImage } from "canvas";
 
-const bg = "./assets/demotivator.png";
+const bg = "./demotivator/demotivator.png";
 
 const imageProperties = {
   width: 714,
