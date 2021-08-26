@@ -1,6 +1,6 @@
 # About the project
 
-## This is a bot created for the Skozu19 conference. The bot can generate humoresques from public sites and tell you when the Sabbath is coming.
+This is a bot created for the Skozu19 conference. The bot can generate humoresques from public sites and tell you when the Sabbath is coming.
 
 # Installation
 
@@ -10,10 +10,9 @@
    `git clone https://github.com/idrevnii/SkozuBot`
 4. Insall NPM packages
    `npm install`
-5. Create in root directory .env file with field `BOT_TOKEN` and assign your token from BotFather.
-   (6. Bot will connect to default Redis ip and port)
+5. Create in root directory .env file with field `BOT_TOKEN` and assign your token from BotFather
 
----
+**Note: Bot uses standart redis host and port**
 
 # Usage
 
