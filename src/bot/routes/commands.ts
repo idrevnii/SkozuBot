@@ -1,4 +1,5 @@
 import { Router } from "telegraf";
+import { createDemotivator } from "../../core/demotivator";
 import { getCustomHumoresque } from "../../core/humoresque";
 import { getRemainingDaysUntillSabbath } from "../../core/sabbath";
 import { IContext } from "../models";
@@ -17,6 +18,11 @@ export const commandsRoute = new Router<IContext>(({ message }) => {
       case "/shabbat@Skozu19_bot":
         return {
           route: "sabbath",
+        };
+      case "/demotivator":
+      case "/demotivator@Skozu19_bot":
+        return {
+          route: "demotivator",
         };
     }
   }
@@ -58,5 +64,28 @@ commandsRoute.on("sabbath", ({ reply }) => {
     reply(`Еще ${remainingDays} до шаббата :(`);
   }
 });
+
+commandsRoute.on(
+  "demotivator",
+  async ({ telegram, message, replyWithPhoto }) => {
+    if (message?.reply_to_message && message.reply_to_message.from?.id) {
+      const id = message.reply_to_message.from.id;
+      // @ts-ignore
+      const title = message.reply_to_message.text;
+      const subtitle = message.text || "";
+      const { photos } = await telegram.getUserProfilePhotos(id, 0, 1);
+      console.log(photos);
+      console.log(photos[0]);
+      const photoId = photos[0][0].file_id;
+      const photoLink = await telegram.getFileLink(photoId);
+      console.log(photoLink);
+      console.log(title, subtitle);
+      const demotivator = await createDemotivator(photoLink, title, subtitle);
+      console.log(demotivator);
+      console.log(typeof demotivator);
+      await replyWithPhoto(demotivator);
+    }
+  }
+);
 
 commandsRoute.on("unknown", () => {});
