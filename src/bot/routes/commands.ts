@@ -80,7 +80,9 @@ commandsRoute.on(
       const demotivator = await createDemotivator(photoLink, title, subtitle);
       console.log(demotivator);
       console.log(typeof demotivator);
-      await replyWithPhoto(demotivator);
+      await replyWithPhoto({
+        source: demotivator,
+      });
     }
   }
 );
