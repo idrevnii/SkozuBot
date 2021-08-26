@@ -19,7 +19,7 @@ export async function demotivatorImage(
   subtitle: any
 ): Promise<any> {
   const ctx = canvas.getContext("2d");
-  ctx.font = "48px Times New Roman";
+  ctx.font = "40px Times New Roman";
 
   const image = await loadImage(bg);
   ctx.drawImage(image, 0, 0);
@@ -30,7 +30,7 @@ export async function demotivatorImage(
   ctx.textAlign = "center";
   ctx.fillText(title, 345, 660);
 
-  ctx.font = "normal 40px Times New Roman";
+  ctx.font = "normal 32px Times New Roman";
   ctx.fillStyle = "#fff";
   ctx.textAlign = "center";
   ctx.fillText(subtitle, 346, 710);

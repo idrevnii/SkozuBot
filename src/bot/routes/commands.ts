@@ -73,13 +73,12 @@ commandsRoute.on(
       // @ts-ignore
       const title = message.reply_to_message.text;
       const subtitle = "";
-      const { photos } = await telegram.getUserProfilePhotos(id, 0, 1);
-      console.log(photos);
+      const userPhotos = await telegram.getUserProfilePhotos(id, 0, 1);
+      console.log(userPhotos);
+      const photos = userPhotos.photos;
       const photoId = photos[0][0].file_id;
       const photoLink = await telegram.getFileLink(photoId);
       const demotivator = await createDemotivator(photoLink, title, subtitle);
-      console.log(demotivator);
-      console.log(typeof demotivator);
       await replyWithPhoto({
         source: demotivator,
       });
