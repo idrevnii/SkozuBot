@@ -74,7 +74,8 @@ commandsRoute.on(
       const title = message.reply_to_message.text;
       const subtitle = "";
       const { photos } = await telegram.getUserProfilePhotos(id, 0, 1);
-      const photoId = photos[0][photos[0].length - 1].file_id;
+      console.log(photos);
+      const photoId = photos[0][0].file_id;
       const photoLink = await telegram.getFileLink(photoId);
       const demotivator = await createDemotivator(photoLink, title, subtitle);
       console.log(demotivator);
