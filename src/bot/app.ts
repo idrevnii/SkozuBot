@@ -17,7 +17,6 @@ export async function createBot() {
       limit: 1,
       // @ts-ignore
       onLimitExceeded: ({ reply, from }) => {
-        reply(`@${from.username} перестань флудить!`);
         console.log(`Flood from: ${from.id}`);
       },
     })
