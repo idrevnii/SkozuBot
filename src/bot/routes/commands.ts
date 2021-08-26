@@ -1,5 +1,6 @@
 import { Router } from "telegraf";
 import { getCustomHumoresque } from "../../core/humoresque";
+import { getRemainingDaysUntillSabbath } from "../../core/sabbath";
 import { IContext } from "../models";
 
 export const commandsRoute = new Router<IContext>(({ message }) => {
@@ -15,8 +16,7 @@ export const commandsRoute = new Router<IContext>(({ message }) => {
       case "/shabbat":
       case "/shabbat@Skozu19_bot":
         return {
-          route: "shabbat",
-          state: { args: splitted.slice(1) },
+          route: "sabbath",
         };
     }
   }
@@ -47,6 +47,15 @@ commandsRoute.on("humoresque", async ({ state, reply, chat }) => {
     }
   } else {
     await reply("Что-то пошло не так. Попробуй еще раз");
+  }
+});
+
+commandsRoute.on("sabbath", ({ reply }) => {
+  const remainingDays = getRemainingDaysUntillSabbath();
+  if (remainingDays === 0) {
+    reply("Шаббат шалом!");
+  } else {
+    reply(`Еще ${remainingDays} до шаббата :(`);
   }
 });
 
