@@ -1,5 +1,9 @@
 import random from "random";
 
+export function getArguments(arr: string[]) {
+  return arr.slice(1);
+}
+
 export function getRandomNumber(min: number, max: number) {
   return random.int(min, max);
 }
