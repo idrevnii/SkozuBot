@@ -2,16 +2,29 @@ import { demotivatorImage } from "../demotivator/demotivator";
 
 export async function createDemotivator(
   imgUrl: string,
-  title: string,
-  subtitle: string
+  titleText: string,
+  subtitleText: string
 ): Promise<Buffer> {
-  return demotivatorImage(
-    imgUrl,
-    title,
-    subtitle,
-    calculateFontSize(title),
-    calculateFontSize(subtitle)
-  );
+  if (subtitleText.length > 0) {
+    return demotivatorImage(
+      imgUrl,
+      titleText,
+      subtitleText,
+      calculateFontSize(titleText),
+      calculateFontSize(subtitleText)
+    );
+  } else {
+    const splittedTitle = titleText.split(" ");
+    const title = splittedTitle.slice(0, splittedTitle.length / 2).join(" ");
+    const subtitle = splittedTitle.slice(splittedTitle.length / 2).join(" ");
+    return demotivatorImage(
+      imgUrl,
+      title,
+      subtitle,
+      calculateFontSize(title),
+      calculateFontSize(subtitle)
+    );
+  }
 }
 
 // Calculation with magic coefficients
