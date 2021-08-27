@@ -16,7 +16,7 @@ export async function createDemotivator(
 
 // Calculation with magic coefficients
 function calculateFontSize(str: string) {
-  const size = Math.ceil(714 / str.split("").length) * 2;
+  const size = Math.ceil(714 / str.split("").length) * 1.5;
   console.log(size);
   return size;
 }
