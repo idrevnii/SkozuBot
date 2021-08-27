@@ -77,11 +77,15 @@ commandsRoute.on(
       console.log(userPhotos);
       const photos = userPhotos.photos;
       const photoId = photos[0][0].file_id;
+      console.log(photos);
       const photoLink = await telegram.getFileLink(photoId);
       const demotivator = await createDemotivator(photoLink, title, subtitle);
-      await replyWithPhoto({
-        source: demotivator,
-      });
+      await replyWithPhoto(
+        {
+          source: demotivator,
+        },
+        { reply_to_message_id: message.message_id }
+      );
     }
   }
 );
