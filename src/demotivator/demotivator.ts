@@ -16,7 +16,9 @@ const canvas = createCanvas(imageProperties.width, imageProperties.height);
 export async function demotivatorImage(
   urlImg: any,
   title: any,
-  subtitle: any
+  subtitle: any,
+  titleFontSize: any,
+  subtitleFontSize: any
 ): Promise<any> {
   const ctx = canvas.getContext("2d");
   ctx.font = "38px Times New Roman";
