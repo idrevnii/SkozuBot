@@ -67,25 +67,32 @@ commandsRoute.on("sabbath", ({ reply }) => {
 
 commandsRoute.on(
   "demotivator",
-  async ({ telegram, message, replyWithPhoto }) => {
+  async ({ telegram, message, replyWithPhoto, reply }) => {
     if (message?.reply_to_message && message.reply_to_message.from?.id) {
-      const id = message.reply_to_message.from.id;
-      // @ts-ignore
-      const title = message.reply_to_message.text;
-      const subtitle = "";
-      const userPhotos = await telegram.getUserProfilePhotos(id, 0, 1);
-      console.log(userPhotos);
-      const photos = userPhotos.photos;
-      const photoId = photos[0][0].file_id;
-      console.log(photos[0], photos[0][photos[0].length - 1]);
-      const photoLink = await telegram.getFileLink(photoId);
-      const demotivator = await createDemotivator(photoLink, title, subtitle);
-      await replyWithPhoto(
-        {
-          source: demotivator,
-        },
-        { reply_to_message_id: message.message_id }
-      );
+      try {
+        const id = message.reply_to_message.from.id;
+        // @ts-ignore
+        const title = message.reply_to_message.text;
+        const subtitle = "";
+        const userPhotos = await telegram.getUserProfilePhotos(id, 0, 1);
+        const photos = userPhotos.photos;
+        const photoId = photos[0][photos[0].length - 1].file_id;
+        const photoLink = await telegram.getFileLink(photoId);
+        const demotivator = await createDemotivator(photoLink, title, subtitle);
+        await replyWithPhoto(
+          {
+            source: demotivator,
+          },
+          { reply_to_message_id: message.message_id }
+        );
+      } catch (e) {
+        console.error(e);
+        await reply(
+          "Не могу сгенерировать демотиватор с этим пользователем. Возможно он заблокировал бота"
+        );
+      }
+    } else {
+      await reply("Эту комманду нужно вызывать ответом на другое сообщение!");
     }
   }
 );
