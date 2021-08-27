@@ -2,6 +2,7 @@ import { Router } from "telegraf";
 import { createDemotivator } from "../../core/demotivator";
 import { getCustomHumoresque } from "../../core/humoresque";
 import { getRemainingDaysUntillSabbath } from "../../core/sabbath";
+import { getArguments } from "../../misc/utils";
 import { IContext } from "../models";
 
 export const commandsRoute = new Router<IContext>(({ message }) => {
@@ -12,7 +13,7 @@ export const commandsRoute = new Router<IContext>(({ message }) => {
       case "/humoresque@Skozu19_bot":
         return {
           route: "humoresque",
-          state: { args: splitted.slice(1) },
+          state: { args: getArguments(splitted) },
         };
       case "/shabbat":
       case "/shabbat@Skozu19_bot":
@@ -23,6 +24,7 @@ export const commandsRoute = new Router<IContext>(({ message }) => {
       case "/demotivator@Skozu19_bot":
         return {
           route: "demotivator",
+          state: { args: getArguments(splitted) },
         };
     }
   }
@@ -67,13 +69,14 @@ commandsRoute.on("sabbath", ({ reply }) => {
 
 commandsRoute.on(
   "demotivator",
-  async ({ telegram, message, replyWithPhoto, reply }) => {
+  async ({ state, telegram, message, replyWithPhoto, reply }) => {
     if (message?.reply_to_message && message.reply_to_message.from?.id) {
       try {
+        console.log(`Called demotivator create from: ${message.from?.id}`);
         const id = message.reply_to_message.from.id;
         // @ts-ignore
         const title = message.reply_to_message.text;
-        const subtitle = "";
+        const subtitle = state.args?.join(" ") || "";
         const userPhotos = await telegram.getUserProfilePhotos(id, 0, 1);
         const photos = userPhotos.photos;
         const photoId = photos[0][photos[0].length - 1].file_id;
