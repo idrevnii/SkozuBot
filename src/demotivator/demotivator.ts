@@ -14,12 +14,12 @@ const imageProperties = {
 const canvas = createCanvas(imageProperties.width, imageProperties.height);
 
 export async function demotivatorImage(
-  urlImg: any,
-  title: any,
-  subtitle: any,
-  titleFontSize: any,
-  subtitleFontSize: any
-): Promise<any> {
+  urlImg: string,
+  title: string,
+  subtitle: string,
+  titleFontSize: number,
+  subtitleFontSize: number
+): Promise<Buffer> {
   const ctx = canvas.getContext("2d");
   ctx.font = `${titleFontSize}px Times New Roman`;
 
