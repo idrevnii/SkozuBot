@@ -1,5 +1,6 @@
 import { Router } from "telegraf";
-import { getCustomHumoresque } from "../../core/humoresque";
+import { getArguments } from "../../misc/utils";
+import { callbackHumoresqueHandler } from "../handlers/humoresque";
 import { IContext } from "../models";
 
 export const callbackRoute = new Router<IContext>(({ callbackQuery }) => {
@@ -9,7 +10,7 @@ export const callbackRoute = new Router<IContext>(({ callbackQuery }) => {
       case "humoresque":
         return {
           route: "humoresque",
-          state: { args: [splitted[1], splitted[2]] },
+          state: { args: getArguments(splitted) },
         };
     }
   }
@@ -19,11 +20,4 @@ export const callbackRoute = new Router<IContext>(({ callbackQuery }) => {
   };
 });
 
-callbackRoute.on("humoresque", async ({ chat, state, answerCbQuery }) => {
-  if (chat?.id && state.args) {
-    const numArgs = state.args.map((arg) => +arg);
-    const humoresque = await getCustomHumoresque(numArgs, chat.id);
-    answerCbQuery();
-    console.log(`Reqeusted humoresque to chat: ${chat.id}`);
-  }
-});
+callbackRoute.on("humoresque", callbackHumoresqueHandler);

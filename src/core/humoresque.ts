@@ -1,6 +1,6 @@
 import { sendHumoresqueMessage } from "../bot/send";
 import { getPairRandomNumberFromRange } from "../misc/utils";
-import { IHumoresquesResult, ITask } from "../worker/models";
+import { IHumoresquesResult } from "../worker/models";
 import { addTaskToQueue } from "../worker/workerInit";
 
 export async function getCustomHumoresque(args: number[], chatId: number) {

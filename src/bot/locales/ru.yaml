@@ -1,0 +1,11 @@
+demotivator_blocked_bot: Не могу сгенерировать демотиватор с этим пользователем. Возможно он заблокировал бота
+demotivator_message_empty: Исходное сообщение не содержит текста!
+demotivator_need_reply: Эту комманду нужно вызывать ответом на другое сообщение!
+
+humoresque_wrong_coefs: Неправильные пропорции юморески! Пропорция должна быть больше нуля и меньше 100
+humoresque_wrong_callback_coefs: Неправильные аргументы на кнопке!
+
+sabbath_today: Шаббат шалом!
+sabbath_coming: Еще ${remainingDays} дня до шаббата :(
+
+unknown_error: Что-то пошло не так. Попробуй еще раз

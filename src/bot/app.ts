@@ -1,5 +1,7 @@
 require("dotenv").config();
+import path from "path";
 import Telegraf from "telegraf";
+import I18n from "telegraf-i18n";
 const rateLimit = require("telegraf-ratelimit");
 import { IContext } from "./models";
 import { callbackRoute } from "./routes/callbackQuery";
@@ -11,13 +13,23 @@ export async function createBot() {
   // @ts-ignore
   bot = new Telegraf<IContext>(process.env.BOT_TOKEN);
 
+  const i18n = new I18n({
+    defaultLanguage: "ru",
+    directory: path.resolve(__dirname, "locales"),
+  });
+
+  bot.use(i18n.middleware());
+
   bot.use(
     rateLimit({
       window: 3000,
       limit: 1,
       // @ts-ignore
-      onLimitExceeded: ({ reply, from }) => {
-        console.log(`Flood from: ${from.id}`);
+      onLimitExceeded: ({ answerCbQuery, from, updateType }: IContext) => {
+        console.log(`Flood from: ${from?.id}`);
+        if (updateType === "callback_query") {
+          answerCbQuery("Stop flooding!");
+        }
       },
     })
   );

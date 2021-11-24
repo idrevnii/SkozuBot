@@ -27,6 +27,7 @@
     "luxon": "^2.0.2",
     "random": "^3.0.6",
     "telegraf": "3",
+    "telegraf-i18n": "^6.6.0",
     "telegraf-ratelimit": "^2.0.0"
   }
 }

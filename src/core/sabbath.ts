@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 
 export function getRemainingDaysUntillSabbath() {
-  return 6 - DateTime.now().setZone("Europe/Moscow").weekday;
+  const today = DateTime.now().setZone("Europe/Moscow").weekday;
+  return today === 7 ? 6 : 6 - today;
 }
