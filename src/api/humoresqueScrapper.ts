@@ -1,12 +1,13 @@
 import cheerio from "cheerio";
 import got from "got/dist/source";
+import { logger } from "../logger/logger";
 import { getRandomNumber } from "../misc/utils";
 
 async function getHtml(url: string) {
   return got(url)
     .then((resp) => [resp.body])
     .catch((err) => {
-      console.error(err);
+      logger.log("error", "http error: ", err);
       return [];
     });
 }

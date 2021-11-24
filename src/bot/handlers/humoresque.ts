@@ -1,4 +1,5 @@
 import { getCustomHumoresque } from "../../core/humoresque";
+import { logger } from "../../logger/logger";
 import { isArgumentsEmpty, validateArguments } from "../../misc/utils";
 import { IContext } from "../models";
 
@@ -14,7 +15,7 @@ export async function commandHumoresqueHandler({
       : validateArguments(state.args);
     if (correctArgs) {
       await getCustomHumoresque(correctArgs, chat.id);
-      console.log(`Reqeusted humoresque to chat: ${chat.id}`);
+      logger.info(`Reqeusted humoresque to chat: ${chat.id}`);
     } else {
       await reply(i18n.t("humoresque_wrong_coefs"));
     }
@@ -34,10 +35,10 @@ export async function callbackHumoresqueHandler({
     if (correctArgs) {
       await getCustomHumoresque(correctArgs, chat.id);
       answerCbQuery();
-      console.log(`Reqeusted humoresque to chat: ${chat.id}`);
+      logger.info(`Reqeusted humoresque to chat: ${chat.id}`);
     } else {
       answerCbQuery(i18n.t("humoresque_wrong_callback_coefs"));
-      console.log(`Wrong callback arguments\n${state.args}\nfrom: ${chat.id}`);
+      logger.info(`Wrong callback arguments\n${state.args}\nfrom: ${chat.id}`);
     }
   }
 }

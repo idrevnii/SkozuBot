@@ -2,6 +2,7 @@ require("dotenv").config();
 import path from "path";
 import Telegraf from "telegraf";
 import I18n from "telegraf-i18n";
+import { logger } from "../logger/logger";
 const rateLimit = require("telegraf-ratelimit");
 import { IContext } from "./models";
 import { callbackRoute } from "./routes/callbackQuery";
@@ -26,7 +27,7 @@ export async function createBot() {
       limit: 1,
       // @ts-ignore
       onLimitExceeded: ({ answerCbQuery, from, updateType }: IContext) => {
-        console.log(`Flood from: ${from?.id}`);
+        logger.info(`Flood from: ${from?.id}`);
         if (updateType === "callback_query") {
           answerCbQuery("Stop flooding!");
         }
@@ -38,7 +39,10 @@ export async function createBot() {
 
   bot.on("callback_query", callbackRoute);
 
-  bot.catch((err: Error) => console.error(err));
+  bot.catch((err: Error) => logger.warn(err));
+
+  process.once("SIGINT", () => bot.stop());
+  process.once("SIGTERM", () => bot.stop());
 
   const { telegram: tg } = bot;
   tg.callApi("getUpdates", { offset: -1 })
@@ -48,6 +52,6 @@ export async function createBot() {
       if (offset) return tg.callApi("getUpdates", { offset });
     })
     .then(() => bot.launch())
-    .then(() => console.info("The bot is launched"))
-    .catch((err) => console.error(err));
+    .then(() => logger.info("The bot is launched"))
+    .catch((err) => logger.warn(err));
 }

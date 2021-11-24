@@ -1,3 +1,4 @@
+import { logger } from "../logger/logger";
 import { bot, i18n } from "./app";
 import { getHumoresqueKeyboard } from "./keyboard";
 
@@ -10,7 +11,7 @@ export async function sendHumoresqueMessage(
   text: string,
   callbackData: string
 ) {
-  console.log(`Humoresque sended to chat: ${chatId}`);
+  logger.info(`Humoresque sended to chat: ${chatId}`);
   return sendMessage(chatId, text, getHumoresqueKeyboard(callbackData));
 }
 
