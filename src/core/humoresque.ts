@@ -12,7 +12,7 @@ export async function processHumoresque({
   humoresques,
   args,
 }: IHumoresquesResult) {
-  if (humoresques[0].length === 0) {
+  if (humoresques[0]?.length === 0) {
     return sendErrorMessage(chatId);
   } else {
     const fixedHumoresques = humoresques[0]
