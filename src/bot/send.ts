@@ -15,5 +15,5 @@ export async function sendHumoresqueMessage(
 }
 
 export async function sendErrorMessage(chatId: number) {
-  return sendMessage(chatId, i18n.t("web_error"));
+  return sendMessage(chatId, i18n.t("web_error", "ru"));
 }
