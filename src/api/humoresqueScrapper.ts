@@ -1,11 +1,10 @@
-import axios from "axios";
 import cheerio from "cheerio";
+import got from "got/dist/source";
 import { getRandomNumber } from "../misc/utils";
 
 async function getHtml(url: string) {
-  return axios
-    .get(url)
-    .then((resp) => [resp.data])
+  return got(url)
+    .then((resp) => [resp.body])
     .catch((err) => {
       console.error(err);
       return [];
@@ -15,15 +14,11 @@ async function getHtml(url: string) {
 export async function getHumoresquesFromRandomPage() {
   const random = getRandomNumber(0, 4112);
   const standartUrl = `https://humornet.ru/anekdot/page/${random}/`;
-  try {
-    const body = await getHtml(standartUrl);
-    return body.map((html) => {
-      const $ = cheerio.load(html);
-      return $("div .text")
-        .map((i, el) => $(el).text())
-        .toArray();
-    });
-  } catch {
-    return [];
-  }
+  const body = await getHtml(standartUrl);
+  return body.map((html) => {
+    const $ = cheerio.load(html);
+    return $("div .text")
+      .map((i, el) => $(el).text())
+      .toArray();
+  });
 }
