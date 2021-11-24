@@ -9,5 +9,6 @@
   "sabbath_today": "Шаббат шалом!",
   "sabbath_coming": "Еще ${remainingDays} дня до шаббата :(",
 
+  "web_error": "Сайт с анекдотами недоступен :(",
   "unknown_error": "Что-то пошло не так. Попробуй еще раз"
 }

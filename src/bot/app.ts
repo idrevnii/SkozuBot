@@ -7,16 +7,16 @@ import { IContext } from "./models";
 import { callbackRoute } from "./routes/callbackQuery";
 import { commandsRoute } from "./routes/commands";
 
+export const i18n = new I18n({
+  defaultLanguage: "ru",
+  directory: path.resolve(__dirname, "locales"),
+});
+
 export let bot: Telegraf<IContext>;
 
 export async function createBot() {
   // @ts-ignore
   bot = new Telegraf<IContext>(process.env.BOT_TOKEN);
-
-  const i18n = new I18n({
-    defaultLanguage: "ru",
-    directory: path.resolve(__dirname, "locales"),
-  });
 
   bot.use(i18n.middleware());
 

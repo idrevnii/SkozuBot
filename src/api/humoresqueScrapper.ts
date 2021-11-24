@@ -15,11 +15,15 @@ async function getHtml(url: string) {
 export async function getHumoresquesFromRandomPage() {
   const random = getRandomNumber(0, 4112);
   const standartUrl = `https://humornet.ru/anekdot/page/${random}/`;
-  const body = await getHtml(standartUrl);
-  return body.map((html) => {
-    const $ = cheerio.load(html);
-    return $("div .text")
-      .map((i, el) => $(el).text())
-      .toArray();
-  });
+  try {
+    const body = await getHtml(standartUrl);
+    return body.map((html) => {
+      const $ = cheerio.load(html);
+      return $("div .text")
+        .map((i, el) => $(el).text())
+        .toArray();
+    });
+  } catch {
+    return [];
+  }
 }
