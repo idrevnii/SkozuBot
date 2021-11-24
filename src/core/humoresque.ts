@@ -12,9 +12,7 @@ export async function processHumoresque({
   humoresques,
   args,
 }: IHumoresquesResult) {
-  if (humoresques[0]?.length === 0) {
-    return sendErrorMessage(chatId);
-  } else {
+  if (humoresques[0] && humoresques[0].length > 0) {
     const fixedHumoresques = humoresques[0]
       .map((hum) => (hum.split(" ").length > 40 ? undefined : hum))
       .filter(Boolean);
@@ -32,5 +30,7 @@ export async function processHumoresque({
       cuttedHumoresques.join(" "),
       `humoresque:${args[0]}:${args[1]}`
     );
+  } else {
+    return sendErrorMessage(chatId);
   }
 }
