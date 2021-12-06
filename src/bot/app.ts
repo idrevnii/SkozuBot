@@ -7,6 +7,7 @@ const rateLimit = require("telegraf-ratelimit");
 import { IContext } from "./models";
 import { callbackRoute } from "./routes/callbackQuery";
 import { commandsRoute } from "./routes/commands";
+import { identificateUser } from "./utils";
 
 export const i18n = new I18n({
   defaultLanguage: "ru",
@@ -25,11 +26,15 @@ export async function createBot() {
     rateLimit({
       window: 3000,
       limit: 1,
-      // @ts-ignore
-      onLimitExceeded: ({ answerCbQuery, from, updateType }: IContext) => {
-        logger.info(`Flood from: ${from?.id}`);
+      onLimitExceeded: ({
+        answerCbQuery,
+        from,
+        updateType,
+        i18n,
+      }: IContext) => {
+        logger.info(`Flood from: ${identificateUser(from)}`);
         if (updateType === "callback_query") {
-          answerCbQuery("Stop flooding!");
+          answerCbQuery(i18n.t("stop_flood"));
         }
       },
     })
