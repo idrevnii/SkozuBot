@@ -1,6 +1,7 @@
 import { createDemotivator } from "../../core/demotivator";
 import { logger } from "../../logger/logger";
 import { IContext } from "../models";
+import { identificateUser } from "../utils";
 
 export async function commandDemotivatorHandler({
   state,
@@ -14,7 +15,9 @@ export async function commandDemotivatorHandler({
     // @ts-ignore
     if (message.reply_to_message.text) {
       try {
-        logger.info(`Called demotivator create from: ${message.from?.id}`);
+        logger.info(
+          `Called demotivator create from: ${identificateUser(message.from)}`
+        );
         const id = message.reply_to_message.from.id;
         // @ts-ignore
         const title = message.reply_to_message.text;
@@ -31,7 +34,7 @@ export async function commandDemotivatorHandler({
           { reply_to_message_id: message.message_id }
         );
       } catch (e) {
-        logger.warn(e);
+        logger.warn(`Can't create demotivator, blocked bot. Reason: ${e}`);
         await reply(i18n.t("demotivator_blocked_bot"));
       }
     } else {
