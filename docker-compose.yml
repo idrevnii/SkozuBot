@@ -9,10 +9,16 @@ services:
     build: .
     container_name: "skozubot"
     volumes:
-      - logs:/usr/src/app/
+      - logs:/usr/src/app/ogs
     depends_on:
       - "skozuredis"
     links:
       - skozuredis
     environment:
       - REDIS_URL=redis://cache
+volumes:
+  logs:
+    driver-opts:
+      type: none
+      device: /home/skozubot/logs
+      o: bind
