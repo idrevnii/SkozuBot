@@ -2,5 +2,16 @@ version: "3"
 services:
   skozuredis:
     image: "redis"
+    container_name: "cache"
+    expose:
+      - 6379
   skozubot:
     build: .
+    volumes:
+      - /var/skozubot/:/usr/src/app/logs
+    depends_on:
+      - "skozuredis"
+    links:
+      - skozuredis
+    environment:
+      - REDIS_URL=redis://cache
