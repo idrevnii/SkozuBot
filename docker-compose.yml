@@ -2,13 +2,14 @@ version: "3"
 services:
   skozuredis:
     image: "redis"
-    container_name: "cache"
+    container_name: "skozuredis"
     expose:
       - 6379
   skozubot:
     build: .
+    container_name: "skozubot"
     volumes:
-      - /var/skozubot/:/usr/src/app/logs
+      - logs:/usr/src/app/
     depends_on:
       - "skozuredis"
     links:
