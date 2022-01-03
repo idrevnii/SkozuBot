@@ -43,7 +43,7 @@ jobs:
           cat >>~/.ssh/config <<END
           Host deploy
             HostName ${{ secrets.SSH_HOST }}
-            User ${{ secretes.SSH_USER }}
+            User ${{ secrets.SSH_USER }}
             IdentityFile ~/.ssh/deploy
             StrictHostKeyChecking no
           END
