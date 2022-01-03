@@ -10,9 +10,9 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: docker.pkg.github.com
-  REPO: idrevnii/skozubot/skozu-image
-  CONTAINER: skozu-image
+  DOCKER_REGISTRY: docker.pkg.github.com
+  DOCKER_REPO: idrevnii/skozubot/skozu-image
+  DOCKER_CONTAINER: skozu-image
 
 jobs:
   push_to_registry:
@@ -27,8 +27,8 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: ${{ env.REGISTRY }}
-          repository: ${{ env.REPO }}
+          registry: ${{ env.DOCKER_REGISTRY }}
+          repository: ${{ env.DOCKER_REPO }}
           tag_with_ref: true
   deploy:
     needs: [push_to_registry]
@@ -38,9 +38,6 @@ jobs:
       SSH_USER: deploy
       SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       SSH_HOST: ${{ secrets.SSH_HOST }}
-      DOCKER_REGISTRY: ${{env.REGISTRY}}
-      DOCKER_REPO: ${{env.REPO}}
-      DOCKER_CONTAINER: ${{env.CONTAINER}}
       GITHUB_ACTOR: ${{github.actor}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
