@@ -47,6 +47,8 @@ jobs:
             IdentityFile ~/.ssh/deploy
             StrictHostKeyChecking no
           END
+      - name: Qute way to debug
+        run: cat ~/.ssh/config
 
       - name: Login to the GitHub Packages Docker Registry
         run: ssh deploy "docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}"
