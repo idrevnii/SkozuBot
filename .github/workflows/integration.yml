@@ -10,28 +10,10 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_REGISTRY: docker.pkg.github.com
-  DOCKER_REPO: idrevnii/skozubot/skozu-image
-  DOCKER_CONTAINER: skozu-image
+  DOCKER_CONTAINER: skozubot
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to GitHub Packages
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v2.7.0
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: ${{ env.DOCKER_REGISTRY }}
-          repository: ${{ env.DOCKER_REPO }}
-          tag_with_ref: true
-  deploy:
-    needs: [push_to_registry]
+  build-and-deploy:
     name: Deploy to DigitalOcean
     runs-on: ubuntu-latest
     env:
@@ -53,23 +35,7 @@ jobs:
             IdentityFile ~/.ssh/deploy
             StrictHostKeyChecking no
           END
-
-      - name: Login to the GitHub Packages Docker Registry
-        run: ssh deploy "docker login $DOCKER_REGISTRY -u $GITHUB_ACTOR -p $GITHUB_TOKEN"
-
-      - name: Pull latest container
-        run: |
-          ssh deploy "docker pull $DOCKER_REGISTRY/$DOCKER_REPO:latest"
-      - name: Stop deployed container
-        continue-on-error: true
-        run: |
-          ssh deploy "docker stop $DOCKER_CONTAINER"
-      - name: Remove deployed container
-        continue-on-error: true
-        run: |
-          ssh deploy "docker rm $DOCKER_CONTAINER"
-      - name: Start docker container
-        run: |
-          ssh deploy "docker run -d --name=$DOCKER_CONTAINER $DOCKER_REGISTRY/$DOCKER_REPO:latest"
-      - name: Logout from the GitHub Packages Docker Registry
-        run: ssh deploy "docker logout $DOCKER_REGISTRY"
+      - name: Clone repo
+        run: git clone https://github.com/idrevnii/SkozuBot && cd SkozuBot
+      - name: Build and deploy container
+        run: DOCKER_HOST=“ssh://$SSH_USER@$SSH_HOST” docker-compose up -d
