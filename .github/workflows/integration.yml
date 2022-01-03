@@ -41,6 +41,9 @@ jobs:
       GITHUB_ACTOR: ${{github.actor}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
+      - name: DEBUG
+        run: |
+          echo $SSH_USER $SSH_HOST $GITHUB_ACTOR
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
