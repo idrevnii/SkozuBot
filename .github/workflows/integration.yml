@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  build-and-deploy:
+  Build-and-deploy:
     env:
       PROJECT: skozubot
       SSH_USER: deploy

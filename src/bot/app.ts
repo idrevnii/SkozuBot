@@ -17,8 +17,7 @@ export const i18n = new I18n({
 export let bot: Telegraf<IContext>;
 
 export async function createBot() {
-  // @ts-ignore
-  bot = new Telegraf<IContext>(process.env.BOT_TOKEN);
+  bot = new Telegraf<IContext>(process.env.BOT_TOKEN || "");
 
   bot.use(i18n.middleware());
 
