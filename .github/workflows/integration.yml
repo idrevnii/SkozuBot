@@ -39,7 +39,7 @@ jobs:
         run: ssh deploy "cd $PROJECT && docker-compose up -d"
 
       - name: Telegram notification
-      - uses: yanzay/notify-telegram@v0.1.0
+        uses: yanzay/notify-telegram@v0.1.0
         if: always()
         with:
           chat: ${{ secrets.NOTIFICATION_CHAT_ID }} # user id or channel name secret
