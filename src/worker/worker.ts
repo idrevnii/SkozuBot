@@ -1,24 +1,17 @@
 import Bull from "bull";
 import { parentPort } from "worker_threads";
-import { getHumoresquesFromRandomPage } from "../api/humoresqueScrapper";
+import { Task, TaskResult } from "./models";
+import { humoresquesQueueHandler } from "./queue";
 
-const humoresques = new Bull("humoresques", process.env.REDIS_URL || "");
+const queue = new Bull("queue", process.env.REDIS_URL || "");
 
-humoresques.process(async (job, done) => {
-  const result = await getHumoresquesFromRandomPage();
-  done(undefined, {
-    type: job.data.type,
-    chatId: job.data.chatId,
-    args: job.data.args,
-    humoresques: result,
-  });
-});
+queue.process("humoresque", humoresquesQueueHandler);
 
-humoresques.on("completed", (job, result) => {
+queue.on("completed", (job, result: TaskResult) => {
   parentPort?.postMessage(result);
   job.remove();
 });
 
-parentPort?.on("message", (message) => {
-  humoresques.add(message);
+parentPort?.on("message", (task: Task) => {
+  queue.add(task.type, task);
 });

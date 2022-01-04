@@ -1,18 +1,18 @@
 import { sendErrorMessage, sendHumoresqueMessage } from "../bot/send";
 import { getPairRandomNumberFromRange } from "../misc/utils";
-import { IHumoresquesResult } from "../worker/models";
-import { addTaskToQueue } from "../worker/workerInit";
+import { TaskResult } from "../worker/models";
+import { createTask } from "../worker/queue";
 
 export async function getCustomHumoresque(args: number[], chatId: number) {
-  addTaskToQueue({ type: "humoresque", chatId, args });
+  createTask({ type: "humoresque", chatId, args });
 }
 
 export async function processHumoresque({
   chatId,
   humoresques,
   args,
-}: IHumoresquesResult) {
-  if (humoresques[0] && humoresques[0].length > 0) {
+}: TaskResult) {
+  if (humoresques?.[0] && humoresques[0].length > 0 && args) {
     const fixedHumoresques = humoresques[0]
       .map((hum) => (hum.split(" ").length > 40 ? undefined : hum))
       .filter(Boolean);
