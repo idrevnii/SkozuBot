@@ -9,7 +9,7 @@ services:
     build: .
     container_name: "skozubot"
     volumes:
-      - /usr/src/app/logs
+      - ./logs:/usr/src/app/logs
     depends_on:
       - "skozuredis"
     links:
