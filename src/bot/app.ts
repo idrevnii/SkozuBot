@@ -1,61 +1,38 @@
-require("dotenv").config();
-import path from "path";
-import Telegraf from "telegraf";
-import I18n from "telegraf-i18n";
-import { logger } from "../logger/logger";
-const rateLimit = require("telegraf-ratelimit");
-import { IContext } from "./models";
-import { callbackRoute } from "./routes/callbackQuery";
-import { commandsRoute } from "./routes/commands";
-import { identificateUser } from "./utils";
+require("dotenv").config()
+import { Bot } from "grammy"
+import { ignoreOld, sequentialize } from "grammy-middlewares"
+import { run } from "@grammyjs/runner"
+import { hydrateReply, parseMode } from "@grammyjs/parse-mode"
+import { hydrateFiles } from "@grammyjs/files"
+import { callbackRouter, textRouter } from "./routes"
+import { getErrorHandling } from "./errorHandling"
+import { getHelpers, getI18n } from "./middlewares"
+import type { IContext } from "./models"
+import { logger } from "../logger"
+import { autoRetry } from "@grammyjs/auto-retry"
 
-export const i18n = new I18n({
-  defaultLanguage: "ru",
-  directory: path.resolve(__dirname, "locales"),
-});
+const bot = new Bot<IContext>(process.env.TOKEN || "")
 
-export let bot: Telegraf<IContext>;
+export async function startBot() {
+    bot.use(sequentialize())
+        .use(ignoreOld())
+        .use(getI18n())
+        .use(hydrateReply)
+        .use(getHelpers())
 
-export async function createBot() {
-  bot = new Telegraf<IContext>(process.env.BOT_TOKEN || "");
+    bot.api.config.use(parseMode("HTML"))
+    bot.api.config.use(hydrateFiles(bot.token))
+    bot.api.config.use(autoRetry())
 
-  bot.use(i18n.middleware());
+    bot.catch(getErrorHandling())
 
-  bot.use(
-    rateLimit({
-      window: 3000,
-      limit: 1,
-      onLimitExceeded: ({
-        answerCbQuery,
-        from,
-        updateType,
-        i18n,
-      }: IContext) => {
-        logger.info(`Flood from: ${identificateUser(from)}`);
-        if (updateType === "callback_query") {
-          answerCbQuery(i18n.t("stop_flood"));
-        }
-      },
-    })
-  );
+    bot.on("message:text", textRouter)
+    bot.on("callback_query:data", callbackRouter)
 
-  bot.on("text", commandsRoute);
+    run(bot)
+    logger.info("Bot started!")
+}
 
-  bot.on("callback_query", callbackRoute);
-
-  bot.catch((err: Error) => logger.warn(err));
-
-  process.once("SIGINT", () => bot.stop());
-  process.once("SIGTERM", () => bot.stop());
-
-  const { telegram: tg } = bot;
-  tg.callApi("getUpdates", { offset: -1 })
-    // @ts-ignore
-    .then((updates) => updates.length && updates[0].update_id + 1)
-    .then((offset) => {
-      if (offset) return tg.callApi("getUpdates", { offset });
-    })
-    .then(() => bot.launch())
-    .then(() => logger.info("The bot is launched"))
-    .catch((err) => logger.warn(err));
+export async function stopBot() {
+    return bot.stop()
 }

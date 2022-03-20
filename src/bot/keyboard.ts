@@ -1,7 +1,8 @@
-import { Extra, Markup } from "telegraf";
+import { InlineKeyboard } from "grammy"
 
-export function getHumoresqueKeyboard(callbackData: string) {
-  return Extra.markup((m) =>
-    m.inlineKeyboard([m.callbackButton("Еще", callbackData)])
-  );
+export function getHumoresqueKeyboard(args: number[]) {
+    return new InlineKeyboard().add({
+        text: "Еще",
+        callback_data: `humor:${args[0]}:${args[1]}`,
+    })
 }

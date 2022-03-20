@@ -1,55 +1,53 @@
-import { getCustomHumoresque } from "../../core/humoresque";
-import { logger } from "../../logger/logger";
-import { isArgumentsEmpty, validateArguments } from "../../misc/utils";
-import { IContext } from "../models";
-import { identificateUser } from "../utils";
+import { getHumoresque } from "../../core"
+import { logger } from "../../logger"
+import { validateArguments, isArgumentsEmpty } from "../../misc"
+import { getHumoresqueKeyboard } from "../keyboard"
+import { CallbackContext, TextContext } from "../models"
 
-export async function commandHumoresqueHandler({
-  state,
-  from,
-  chat,
-  i18n,
-  reply,
-}: IContext) {
-  if (state.args && chat?.id) {
-    const correctArgs = isArgumentsEmpty(state.args)
-      ? [50, 50]
-      : validateArguments(state.args);
+export async function humoresqueHandler(ctx: TextContext) {
+    const text = ctx.message.text
+    const args = text.split(" ").slice(1, 3)
+    const correctArgs = isArgumentsEmpty(args)
+        ? [50, 50]
+        : validateArguments(args)
     if (correctArgs) {
-      await getCustomHumoresque(correctArgs, chat.id);
-      logger.info(
-        `Reqeusted humoresque to chat: ${chat.id} from user: ${identificateUser(
-          from
-        )}`
-      );
+        logger.info(
+            `Reqeusted humoresque to chat: ${
+                ctx.chat.id
+            } from user: ${ctx.whois(ctx.from)}`
+        )
+        const humoresque = await getHumoresque(correctArgs)
+        if (humoresque) {
+            await ctx.reply(humoresque, {
+                reply_markup: getHumoresqueKeyboard(correctArgs),
+            })
+        } else {
+            await ctx.reply(ctx.i18n.t("web_error"))
+        }
     } else {
-      await reply(i18n.t("humoresque_wrong_coefs"));
+        await ctx.reply(ctx.i18n.t("humoresque_wrong_coefs"))
     }
-  } else {
-    await reply(i18n.t("unknown_error"));
-  }
 }
 
-export async function callbackHumoresqueHandler({
-  state,
-  from,
-  chat,
-  i18n,
-  answerCbQuery,
-}: IContext) {
-  if (chat?.id && state.args) {
-    const correctArgs = validateArguments(state.args);
+export async function callbackHumoresqueHandler(ctx: CallbackContext) {
+    const args = ctx.callbackQuery.data.split(":").slice(1, 3)
+    const correctArgs = validateArguments(args)
     if (correctArgs) {
-      await getCustomHumoresque(correctArgs, chat.id);
-      answerCbQuery();
-      logger.info(
-        `Reqeusted humoresque to chat: ${chat.id} from user: ${identificateUser(
-          from
-        )}`
-      );
+        logger.info(
+            `Reqeusted humoresque to chat: ${
+                ctx.callbackQuery.from.id
+            } from user: ${ctx.whois(ctx.from)}`
+        )
+        ctx.answerCallbackQuery()
+        const humoresque = await getHumoresque(correctArgs)
+        if (humoresque) {
+            await ctx.reply(humoresque, {
+                reply_markup: getHumoresqueKeyboard(correctArgs),
+            })
+        } else {
+            await ctx.reply(ctx.i18n.t("web_error"))
+        }
     } else {
-      answerCbQuery(i18n.t("humoresque_wrong_callback_coefs"));
-      logger.info(`Wrong callback arguments\n${state.args}\nfrom: ${chat.id}`);
+        await ctx.reply(ctx.i18n.t("humoresque_wrong_coefs"))
     }
-  }
 }
