@@ -33,7 +33,7 @@ jobs:
                   END
 
             - name: Clone repo
-              run: ssh deploy "find /$PROJECT -type f -not -name '*.log' -delete && git clone https://github.com/idrevnii/$PROJECT"
+              run: ssh deploy "find /$PROJECT/ -type f -not -name '*.log' -delete && git clone https://github.com/idrevnii/$PROJECT"
 
             - name: Docker up
               run: ssh deploy "cd $PROJECT && docker-compose up -d"
