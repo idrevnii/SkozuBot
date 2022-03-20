@@ -4,4 +4,4 @@ services:
         build: .
         container_name: "skozubot"
         volumes:
-            - ./logs:/usr/src/app/logs
+            - ./../skozulogs:/usr/src/app/logs
