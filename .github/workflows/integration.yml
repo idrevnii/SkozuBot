@@ -1,47 +1,47 @@
 name: Deploy DO
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: tag
-        required: true
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+        inputs:
+            tag:
+                description: tag
+                required: true
 
 jobs:
-  Build-and-deploy:
-    env:
-      PROJECT: skozubot
-      SSH_USER: deploy
-      SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      SSH_HOST: ${{ secrets.SSH_HOST }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/deploy
-          chmod 600 ~/.ssh/deploy
-          cat >>~/.ssh/config <<END
-          Host deploy
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/deploy
-            StrictHostKeyChecking no
-          END
+    Build-and-deploy:
+        env:
+            PROJECT: skozubot
+            SSH_USER: deploy
+            SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            SSH_HOST: ${{ secrets.SSH_HOST }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Configure SSH
+              run: |
+                  mkdir -p ~/.ssh/
+                  echo "$SSH_KEY" > ~/.ssh/deploy
+                  chmod 600 ~/.ssh/deploy
+                  cat >>~/.ssh/config <<END
+                  Host deploy
+                    HostName $SSH_HOST
+                    User $SSH_USER
+                    IdentityFile ~/.ssh/deploy
+                    StrictHostKeyChecking no
+                  END
 
-      - name: Clone repo
-        run: ssh deploy "rm -rf $PROJECT && git clone https://github.com/idrevnii/$PROJECT"
+            - name: Clone repo
+              run: ssh deploy "find /$PROJECT -type f -not -name '*.log' -delete && git clone https://github.com/idrevnii/$PROJECT"
 
-      - name: Docker up
-        run: ssh deploy "cd $PROJECT && docker-compose up -d"
+            - name: Docker up
+              run: ssh deploy "cd $PROJECT && docker-compose up -d"
 
-      - name: Telegram notification
-        uses: yanzay/notify-telegram@v0.1.0
-        if: always()
-        with:
-          chat: ${{ secrets.NOTIFICATION_CHAT_ID }} # user id or channel name secret
-          token: ${{ secrets.NOTIFICATION_TOKEN }} # token secret
-          status: ${{ job.status }} # do not modify this line
+            - name: Telegram notification
+              uses: yanzay/notify-telegram@v0.1.0
+              if: always()
+              with:
+                  chat: ${{ secrets.NOTIFICATION_CHAT_ID }} # user id or channel name secret
+                  token: ${{ secrets.NOTIFICATION_TOKEN }} # token secret
+                  status: ${{ job.status }} # do not modify this line
