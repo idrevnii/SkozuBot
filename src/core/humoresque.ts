@@ -14,7 +14,7 @@ export async function getHumoresque(args: number[]) {
             0,
             smallHumoresques.length - 1
         )
-        const cuttedHumoresques = random.map((num, index) => {
+        const cuttedHumoresques: string[] = random.map((num, index) => {
             const humor = smallHumoresques[num]
             return index === 0
                 ? humor.slice(0, Math.floor((humor.length / 100) * args[index]))

@@ -8,6 +8,8 @@ import {
 import { TextContext } from "../models"
 
 const commands: Record<string, string> = {
+    "/start": "start",
+    "/start@Skozu19_bot": "start",
     "/humoresque": "humoresque",
     "/humoresque@Skozu19_bot": "humoresque",
     "/shabbat": "sabbath",
@@ -17,10 +19,6 @@ const commands: Record<string, string> = {
 }
 
 export const textRouter = new Router<TextContext>((ctx) => {
-    if (ctx.msg.text === "/start") {
-        return "start"
-    }
-
     for (const command of Object.keys(commands)) {
         if (command === ctx.msg.text) {
             return commands[command]
