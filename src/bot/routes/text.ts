@@ -19,15 +19,9 @@ const commands: Record<string, string> = {
 }
 
 export const textRouter = new Router<TextContext>((ctx) => {
-    for (const command of Object.keys(commands)) {
-        if (command === ctx.msg.text) {
-            return commands[command]
-        }
-    }
-
-    const withoutArgs = ctx.msg.text.split(" ")[0]
-    if (commands[withoutArgs]) {
-        return commands[withoutArgs]
+    const command = ctx.msg.text.split(" ")[0]
+    if (commands[command]) {
+        return commands[command]
     }
 })
 
