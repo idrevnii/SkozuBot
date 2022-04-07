@@ -1,4 +1,4 @@
-name: Deploy DO
+name: Deploy
 
 on:
     push:
@@ -15,28 +15,19 @@ jobs:
         env:
             PROJECT: skozubot
             SSH_USER: deploy
-            SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
             SSH_HOST: ${{ secrets.SSH_HOST }}
         runs-on: ubuntu-latest
         steps:
-            - name: Configure SSH
-              run: |
-                  mkdir -p ~/.ssh/
-                  echo "$SSH_KEY" > ~/.ssh/deploy
-                  chmod 600 ~/.ssh/deploy
-                  cat >>~/.ssh/config <<END
-                  Host deploy
-                    HostName $SSH_HOST
-                    User $SSH_USER
-                    IdentityFile ~/.ssh/deploy
-                    StrictHostKeyChecking no
-                  END
-
-            - name: Clone repo
-              run: ssh deploy "git clone https://github.com/idrevnii/$PROJECT"
-
-            - name: Docker up
-              run: ssh deploy "cd $PROJECT && docker-compose up -d"
+            - name: Deploy by ssh
+              uses: appleboy/ssh-action@master
+              with:
+                  host: $SSH_HOST
+                  username: $SSH_USER
+                  password:
+                  script: |
+                      rm -rf $PROJECT && git clone https://github.com/idrevnii/$PROJECT
+                      cd $PROJECT && docker-compose up -d
 
             - name: Telegram notification
               uses: yanzay/notify-telegram@v0.1.0
