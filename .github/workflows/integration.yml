@@ -24,7 +24,7 @@ jobs:
               with:
                   host: $SSH_HOST
                   username: $SSH_USER
-                  password:
+                  password: $SSH_PASSWORD
                   script: |
                       rm -rf $PROJECT && git clone https://github.com/idrevnii/$PROJECT
                       cd $PROJECT && docker-compose up -d
