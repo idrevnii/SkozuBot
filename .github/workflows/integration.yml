@@ -14,17 +14,14 @@ jobs:
     Build-and-deploy:
         env:
             PROJECT: skozubot
-            SSH_USER: deploy
-            SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-            SSH_HOST: ${{ secrets.SSH_HOST }}
         runs-on: ubuntu-latest
         steps:
             - name: Deploy by ssh
               uses: appleboy/ssh-action@master
               with:
-                  host: $SSH_HOST
-                  username: $SSH_USER
-                  password: $SSH_PASSWORD
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  password: ${{ secrets.SSH_PASSWORD }}
                   script: |
                       rm -rf $PROJECT && git clone https://github.com/idrevnii/$PROJECT
                       cd $PROJECT && docker-compose up -d
