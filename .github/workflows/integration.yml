@@ -12,8 +12,6 @@ on:
 
 jobs:
     Build-and-deploy:
-        env:
-            PROJECT: skozubot
         runs-on: ubuntu-latest
         steps:
             - name: Deploy by ssh
@@ -23,8 +21,8 @@ jobs:
                   username: ${{ secrets.SSH_USER }}
                   password: ${{ secrets.SSH_PASSWORD }}
                   script: |
-                      rm -rf $PROJECT && git clone https://github.com/idrevnii/$PROJECT
-                      cd $PROJECT && docker-compose up -d
+                      rm -rf skozubot && git clone https://github.com/idrevnii/skozubot
+                      cd skozubot && docker-compose up -d
 
             - name: Telegram notification
               uses: yanzay/notify-telegram@v0.1.0
