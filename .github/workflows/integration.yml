@@ -12,12 +12,12 @@ on:
 
 jobs:
     Build-and-deploy:
-        env:
-            TOKEN: ${{ secrets.TOKEN }}
         runs-on: ubuntu-latest
         steps:
             - name: Deploy by ssh
               uses: appleboy/ssh-action@master
+              env:
+                  TOKEN: ${{ secrets.TOKEN }}
               with:
                   host: ${{ secrets.SSH_HOST }}
                   username: ${{ secrets.SSH_USER }}
