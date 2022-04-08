@@ -10,4 +10,7 @@ RUN npm run build
 
 RUN npm install --production
 
+ARG TOKEN
+ENV TOKEN=$TOKEN
+
 CMD [ "node", "build/index.js" ]

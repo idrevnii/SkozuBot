@@ -1,7 +1,10 @@
 version: "3"
 services:
     skozubot:
-        build: .
+        build:
+            context: .
+            args:
+                TOKEN: ${TOKEN}
         container_name: "skozubot"
         volumes:
             - ./../skozulogs:/usr/src/app/logs
