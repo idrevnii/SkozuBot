@@ -25,7 +25,7 @@ jobs:
                   envs: TOKEN
                   script: |
                       rm -rf skozubot && git clone https://github.com/idrevnii/skozubot
-                      cd skozubot && docker-compose up -d --build
+                      cd skozubot && TOKEN=$TOKEN docker-compose up -d --build
 
             - name: Telegram notification
               uses: yanzay/notify-telegram@v0.1.0
