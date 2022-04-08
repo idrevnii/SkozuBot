@@ -24,7 +24,6 @@ jobs:
                   password: ${{ secrets.SSH_PASSWORD }}
                   envs: TOKEN
                   script: |
-                      echo "token=$TOKEN"
                       rm -rf skozubot && git clone https://github.com/idrevnii/skozubot
                       cd skozubot && docker-compose up -d --build
 
