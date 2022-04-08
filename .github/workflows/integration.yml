@@ -12,6 +12,8 @@ on:
 
 jobs:
     Build-and-deploy:
+        env:
+            TOKEN: ${{ secrets.TOKEN }}
         runs-on: ubuntu-latest
         steps:
             - name: Deploy by ssh
