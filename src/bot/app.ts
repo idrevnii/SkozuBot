@@ -1,4 +1,4 @@
-require("dotenv").config()
+// require("dotenv").config()
 import { Bot } from "grammy"
 import { ignoreOld, sequentialize } from "grammy-middlewares"
 import { run } from "@grammyjs/runner"
