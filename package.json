@@ -34,6 +34,7 @@
     "luxon": "^2.0.2",
     "node-html-parser": "^5.3.3",
     "random": "^3.0.6",
+    "source-map-support": "^0.5.21",
     "winston": "^3.3.3"
   }
 }
