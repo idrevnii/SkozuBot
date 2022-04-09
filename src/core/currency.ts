@@ -20,8 +20,8 @@ export async function getCurrencyRate(currency: Currency) {
 let cryptoCache: Record<string, string>[] | undefined
 
 const cryptoCurrencyMap = {
-    BTC: "BTCRUB",
-    ETH: "ETHRUB",
+    BTC: "BTCUSDT",
+    ETH: "ETHUSDT",
     USDT: "USDTRUB",
 }
 
