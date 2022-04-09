@@ -5,6 +5,7 @@ import {
     humoresqueHandler,
     startHandler,
 } from "../handlers"
+import { currencyHandler } from "../handlers/currency"
 import { TextContext } from "../models"
 
 const commands: Record<string, string> = {
@@ -16,6 +17,8 @@ const commands: Record<string, string> = {
     "/shabbat@Skozu19_bot": "sabbath",
     "/demotivator": "demotivator",
     "/demotivator@Skozu19_bot": "demotivator",
+    "/currency": "currency",
+    "/currency@Skozu19_bot": "currency",
 }
 
 export const textRouter = new Router<TextContext>((ctx) => {
@@ -29,3 +32,4 @@ textRouter.route("start", startHandler)
 textRouter.route("humoresque", humoresqueHandler)
 textRouter.route("sabbath", sabbathHandler)
 textRouter.route("demotivator", demotivatorHandler)
+textRouter.route("currency", currencyHandler)

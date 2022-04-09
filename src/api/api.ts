@@ -1,5 +1,6 @@
 import got from "got/dist/source"
 import parse from "node-html-parser"
+import { CurrencyPair } from "../core/models"
 import { logger } from "../logger"
 import { getRandomNumber } from "../misc/utils"
 
@@ -16,10 +17,26 @@ export async function getHumoresquesFromRandomPage() {
     const random = getRandomNumber(0, 4112)
     const standartUrl = `https://humornet.ru/anekdot/page/${random}/`
     const body = await get(standartUrl)
-    if (body) {
-        const root = parse(body)
-        return root.querySelectorAll("div .text").map((el) => el.innerText)
-    } else {
-        return
-    }
+    if (!body) return
+    const root = parse(body)
+    return root.querySelectorAll("div .text").map((el) => el.innerText)
+}
+
+// TODO: Realistic sabbath time
+// export async function getIncomingSabbathDate() {
+//     const url = "https://www.hebcal.com/shabbat?cfg=json&geonameid=281184"
+//     const body = await get(url)
+//     if (!body) return
+//     const data: Record<string, any> = JSON.parse(body)
+//     return data.items?.filter(
+//         (item: Record<string, string>) => item?.category === "candles"
+//     )[0]?.date
+// }
+
+export async function getExchangeRate(currency: CurrencyPair) {
+    const url = `https://www.moex.com/ru/derivatives/currency-rate.aspx?currency=${currency}`
+    const body = await get(url)
+    if (!body) return
+    const root = parse(body)
+    return root.querySelector("#ctl00_PageContent_tbxCurrentRate")?.innerText
 }

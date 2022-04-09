@@ -1,1 +1,1 @@
-export { getHumoresquesFromRandomPage } from "./api"
+export { getHumoresquesFromRandomPage, getExchangeRate } from "./api"
