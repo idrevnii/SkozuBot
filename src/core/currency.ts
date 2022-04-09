@@ -17,6 +17,8 @@ export async function getCurrencyRate(currency: Currency) {
     ).toFixed(2)
 }
 
+let cryptoCache: Record<string, string>[] | undefined
+
 const cryptoCurrencyMap = {
     BTC: "BTCRUB",
     ETH: "ETHRUB",
@@ -24,9 +26,13 @@ const cryptoCurrencyMap = {
 }
 
 export async function getCryptoCurrencyRate(crypto: CryptoCurrency) {
-    const cryptoList = await getCryptoExchangeRate()
-    if (!cryptoList) return
-    const price = cryptoList.find(
+    if (!cryptoCache) {
+        const cryptoList = await getCryptoExchangeRate()
+        if (!cryptoList) return
+        cryptoCache = cryptoList
+        setTimeout(() => (cryptoCache = undefined), 300000)
+    }
+    const price = cryptoCache.find(
         (cryptoObj) => cryptoObj.symbol === cryptoCurrencyMap[crypto]
     )?.price
     if (!price) return
