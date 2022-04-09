@@ -40,3 +40,12 @@ export async function getExchangeRate(currency: CurrencyPair) {
     const root = parse(body)
     return root.querySelector("#ctl00_PageContent_tbxCurrentRate")?.innerText
 }
+
+export async function getCryptoExchangeRate(): Promise<
+    Record<string, string>[] | undefined
+> {
+    const url = "https://api.binance.com/api/v3/ticker/price"
+    const body = await get(url)
+    if (!body) return
+    return JSON.parse(body)
+}
