@@ -6,6 +6,8 @@ export async function currencyHandler(ctx: TextContext) {
         (await getCurrencyRate("USD")) ?? ctx.i18n.t("currency_error")
     const rateEUR =
         (await getCurrencyRate("EUR")) ?? ctx.i18n.t("currency_error")
+    const rateCNY =
+        (await getCurrencyRate("CNY")) ?? ctx.i18n.t("currency_error")
     const rateBTC =
         (await getCryptoCurrencyRate("BTC")) ?? ctx.i18n.t("currency_error")
     const rateETH =
@@ -16,6 +18,7 @@ export async function currencyHandler(ctx: TextContext) {
         ctx.i18n.t("currency_show", {
             rateUSD,
             rateEUR,
+            rateCNY,
             rateUSDT,
             rateBTC,
             rateETH,

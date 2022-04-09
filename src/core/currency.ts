@@ -4,6 +4,7 @@ import { CryptoCurrency, Currency, CurrencyPair } from "./models"
 const currencyMap: Record<Currency, CurrencyPair> = {
     EUR: "EUR_RUB",
     USD: "USD_RUB",
+    CNY: "CNY_RUB",
 }
 
 export async function getCurrencyRate(currency: Currency) {

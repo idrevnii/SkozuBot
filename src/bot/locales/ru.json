@@ -11,7 +11,7 @@
   "sabbath_today": "Шаббат шалом!",
   "sabbath_coming": "Еще ${remainingDays} дня до шаббата :(",
 
-  "currency_show": "💴 Текущий курс валют:\n🇺🇸Доллар США: ${rateUSD}\n🇪🇺Евро: ${rateEUR}\n💲USDT: ${rateUSDT}\n🟡BTC: ${rateBTC}\n🟣ETH: ${rateETH}",
+  "currency_show": "💴 Текущий курс валют:\n🇺🇸Доллар США: ${rateUSD}\n🇪🇺Евро: ${rateEUR}\n🇨🇳Юань: ${rateCNY}\n💲USDT: ${rateUSDT}\n🟡BTC: ${rateBTC}\n🟣ETH: ${rateETH}",
   "currency_error": "Не удалось получить данные",
 
   "stop_flood": "Прекрати флудить",
