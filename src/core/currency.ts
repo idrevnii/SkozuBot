@@ -13,6 +13,7 @@ export async function getCurrencyRate(currency: Currency) {
     return parseFloat(
         rateStr
             ?.slice(rateStr.indexOf(":") + 1, rateStr.lastIndexOf("на"))
+            .replace(",", ".")
             .trim()
     ).toFixed(2)
 }
