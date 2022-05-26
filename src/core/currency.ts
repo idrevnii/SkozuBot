@@ -2,20 +2,15 @@ import { getExchangeRate, getCryptoExchangeRate } from "../api"
 import { CryptoCurrency, Currency, CurrencyPair } from "./models"
 
 const currencyMap: Record<Currency, CurrencyPair> = {
-    EUR: "EUR_RUB",
-    USD: "USD_RUB",
-    CNY: "CNY_RUB",
+    EUR: { from: "RUB", to: "EUR" },
+    USD: { from: "RUB", to: "USD" },
+    CNY: { from: "RUB", to: "CNY" },
 }
 
 export async function getCurrencyRate(currency: Currency) {
     const rateStr = await getExchangeRate(currencyMap[currency])
     if (!rateStr) return
-    return parseFloat(
-        rateStr
-            ?.slice(rateStr.indexOf(":") + 1, rateStr.lastIndexOf("на"))
-            .replace(",", ".")
-            .trim()
-    ).toFixed(2)
+    return parseFloat(rateStr.replace(",", ".").trim()).toFixed(2)
 }
 
 let cryptoCache: Record<string, string>[] | undefined

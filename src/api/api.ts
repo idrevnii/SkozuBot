@@ -33,12 +33,39 @@ export async function getHumoresquesFromRandomPage() {
 //     )[0]?.date
 // }
 
-export async function getExchangeRate(currency: CurrencyPair) {
-    const url = `https://www.moex.com/ru/derivatives/currency-rate.aspx?currency=${currency}`
+export async function getMoexExchangeRate(currency: CurrencyPair) {
+    const url = `https://www.moex.com/ru/derivatives/currency-rate.aspx?currency=${currency.to}_${currency.from}`
     const body = await get(url)
     if (!body) return
     const root = parse(body)
     return root.querySelector("#ctl00_PageContent_tbxCurrentRate")?.innerText
+}
+
+function getFinamUrl(currency: CurrencyPair) {
+    const baseUrl = "https://www.finam.ru/quote/mosbirzha-valyutnyj-rynok"
+    const from = currency.from.toLowerCase()
+    const to = currency.to.toLowerCase()
+    if (currency.to === "CNY") {
+        return `${baseUrl}/${to}-${from}tom-${to}-${from}/`
+    }
+    return `${baseUrl}/${to}${from}tom-${to}-${from}/`
+}
+
+export async function getFinamExchangeRate(currency: CurrencyPair) {
+    const url = getFinamUrl(currency)
+    const body = await get(url)
+    if (!body) return
+    const root = parse(body)
+    return root.querySelector("span.PriceInformation__price--26G")?.innerText
+}
+
+export async function getExchangeRate(currency: CurrencyPair) {
+    const moex = await getMoexExchangeRate(currency)
+    if (!moex) {
+        const finam = await getFinamExchangeRate(currency)
+        return finam
+    }
+    return moex?.slice(moex.indexOf(":") + 1, moex.lastIndexOf("на"))
 }
 
 export async function getCryptoExchangeRate(): Promise<
