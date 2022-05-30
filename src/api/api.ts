@@ -33,7 +33,7 @@ export async function getHumoresquesFromRandomPage() {
 //     )[0]?.date
 // }
 
-export async function getMoexExchangeRate(currency: CurrencyPair) {
+async function getMoexExchangeRate(currency: CurrencyPair) {
     const url = `https://www.moex.com/ru/derivatives/currency-rate.aspx?currency=${currency.to}_${currency.from}`
     const body = await get(url)
     if (!body) return
@@ -51,7 +51,7 @@ function getFinamUrl(currency: CurrencyPair) {
     return `${baseUrl}/${to}${from}tom-${to}-${from}/`
 }
 
-export async function getFinamExchangeRate(currency: CurrencyPair) {
+async function getFinamExchangeRate(currency: CurrencyPair) {
     const url = getFinamUrl(currency)
     const body = await get(url)
     if (!body) return

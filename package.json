@@ -16,6 +16,7 @@
     "esbuild": "^0.14.34",
     "esbuild-node-tsc": "^1.8.5",
     "nodemon": "^2.0.9",
+    "pino-pretty": "^7.6.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
@@ -33,8 +34,9 @@
     "grammy-middlewares": "^1.0.11",
     "luxon": "^2.3.1",
     "node-html-parser": "^5.3.3",
+    "pino": "^7.11.0",
+    "pino-logflare": "^0.3.12",
     "random": "^3.0.6",
-    "source-map-support": "^0.5.21",
-    "winston": "^3.3.3"
+    "source-map-support": "^0.5.21"
   }
 }

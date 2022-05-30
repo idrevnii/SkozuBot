@@ -1,7 +1,13 @@
 import { getCryptoCurrencyRate, getCurrencyRate } from "../../core"
+import { logger } from "../../logger"
 import { TextContext } from "../models"
 
 export async function currencyHandler(ctx: TextContext) {
+    logger.info(
+        `Reqeusted currency to chat: ${ctx.from.id} from user: ${ctx.whois(
+            ctx.from
+        )}`
+    )
     const rateUSD =
         (await getCurrencyRate("USD")) ?? ctx.i18n.t("currency_error")
     const rateEUR =

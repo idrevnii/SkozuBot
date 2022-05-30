@@ -1,9 +1,5 @@
 import random from "random"
 
-export function getArguments(arr: string[], end?: number) {
-    return end ? arr.slice(1, end) : arr.slice(1)
-}
-
 export function isArgumentsEmpty(args: string[]) {
     return args.length === 0
 }
