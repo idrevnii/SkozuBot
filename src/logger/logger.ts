@@ -10,7 +10,7 @@ export const logger = (() => {
             })
             return pino({}, stream)
         }
-        return pino({}, pino.destination("./logs/combined.log"))
+        return pino({}, pino.destination("logs/combined.log"))
     }
     return pino({
         transport: {

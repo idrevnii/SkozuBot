@@ -12,5 +12,6 @@ RUN npm install --production
 
 ARG TOKEN
 ENV TOKEN=$TOKEN
+ENV NODE_ENV production
 
 CMD [ "node", "build/index.js" ]
