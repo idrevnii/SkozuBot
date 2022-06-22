@@ -22,17 +22,6 @@ export async function getHumoresquesFromRandomPage() {
     return root.querySelectorAll("div .text").map((el) => el.innerText)
 }
 
-// TODO: Realistic sabbath time
-// export async function getIncomingSabbathDate() {
-//     const url = "https://www.hebcal.com/shabbat?cfg=json&geonameid=281184"
-//     const body = await get(url)
-//     if (!body) return
-//     const data: Record<string, any> = JSON.parse(body)
-//     return data.items?.filter(
-//         (item: Record<string, string>) => item?.category === "candles"
-//     )[0]?.date
-// }
-
 async function getMoexExchangeRate(currency: CurrencyPair) {
     const url = `https://www.moex.com/ru/derivatives/currency-rate.aspx?currency=${currency.to}_${currency.from}`
     const body = await get(url)

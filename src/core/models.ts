@@ -6,3 +6,5 @@ export type CurrencyPair = {
 }
 
 export type CryptoCurrency = "BTC" | "ETH" | "USDT"
+
+export type TCurrency = Currency | CryptoCurrency

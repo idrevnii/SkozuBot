@@ -1,5 +1,8 @@
 import { startBot, stopBot } from "./bot/app"
+import { initDollarCache } from "./core"
+import { cronDollarHandler } from "./core/currency"
 import { logger } from "./logger"
+import * as cron from "node-cron"
 
 async function gracefulStop() {
     await stopBot()
@@ -7,6 +10,9 @@ async function gracefulStop() {
 
 async function main() {
     await startBot()
+    await initDollarCache()
+
+    cron.schedule("*/15 * * * *", cronDollarHandler)
 
     process
         .on("unhandledRejection", (reason) => {

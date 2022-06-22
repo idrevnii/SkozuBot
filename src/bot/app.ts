@@ -1,4 +1,4 @@
-// require("dotenv").config()
+require("dotenv").config()
 import { Bot } from "grammy"
 import { ignoreOld, sequentialize } from "grammy-middlewares"
 import { run } from "@grammyjs/runner"
@@ -11,7 +11,7 @@ import type { IContext } from "./models"
 import { logger } from "../logger"
 import { autoRetry } from "@grammyjs/auto-retry"
 
-const bot = new Bot<IContext>(process.env.TOKEN || "")
+export const bot = new Bot<IContext>(process.env.TOKEN || "")
 
 export async function startBot() {
     bot.use(sequentialize())
@@ -19,6 +19,10 @@ export async function startBot() {
         .use(getI18n())
         .use(hydrateReply)
         .use(getHelpers())
+        .use((ctx, next) => {
+            logger.info(ctx)
+            return next()
+        })
 
     bot.api.config.use(parseMode("HTML"))
     bot.api.config.use(hydrateFiles(bot.token))
