@@ -1,4 +1,4 @@
-require("dotenv").config()
+// require("dotenv").config()
 import { Bot } from "grammy"
 import { ignoreOld, sequentialize } from "grammy-middlewares"
 import { run } from "@grammyjs/runner"
@@ -19,10 +19,6 @@ export async function startBot() {
         .use(getI18n())
         .use(hydrateReply)
         .use(getHelpers())
-        .use((ctx, next) => {
-            logger.info(ctx)
-            return next()
-        })
 
     bot.api.config.use(parseMode("HTML"))
     bot.api.config.use(hydrateFiles(bot.token))

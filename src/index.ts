@@ -1,6 +1,6 @@
 import { startBot, stopBot } from "./bot/app"
 import { initDollarCache } from "./core"
-import { cronDollarHandler } from "./core/currency"
+import { cronDollarHandler } from "./core"
 import { logger } from "./logger"
 import * as cron from "node-cron"
 
