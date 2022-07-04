@@ -1,23 +1,23 @@
 # About the project
 
-This is a bot created for the Skozu19 conference. The bot can generate humoresques from public sites and tell you when the Sabbath is coming.
+The bot is written with grammyjs and created for the Skozu19 conference. Bot can create random jokes display the current exchange rate and remind you when the next Sabbath.
 
 # Installation
 
 1. Get a free Bot Token from BotFather in Telegram
-2. Install Redis
-3. Clone the repo
+2. Clone the repo
    `git clone https://github.com/idrevnii/SkozuBot`
-4. Insall NPM packages
-   `npm install`
-5. Create in root directory .env file with field `BOT_TOKEN` and assign your token from BotFather
-
-**Note: Bot uses standart redis host and port**
+3. Insall NPM packages
+   `npm install` or `yarn`
+4. Create in root directory .env file with field `BOT_TOKEN` and assign your token from BotFather
+5. Run the bot
+   `npm start` or `yarn start`
 
 # Usage
 
 ## Commands
 
-- `/humoresque` or `/humoresque@Skozu19_bot`(in conference) - generate random glued humoresques from a public joke site. You can specify how many percent to take from the first humoresque and how much from the second humoresque. For example: `/humoresque 40 60` will form a glued humoresque with 40% part from the first humoresque and 60% part from the second humoresque.
-- `/shabbat` or `/shabbat@Skozu19_bot` - tells you how close the Sabbath is.
-- `/demotivator` or `/demotivator@Skozu19_bot` - creates a demotivator, you can add a bottom line by passing the string after the command. This command must be triggered by a response to another message
+-   `/currency` or `/currency@Skozu19_bot` - get the current exchange rate of USD/RUB, EUR/RUB, CNY/RUB, BTC/USD, ETH/USD, USDT/RUB
+-   `/humoresque` or `/humoresque@Skozu19_bot`(in conference) - generate random glued humoresques from a public joke site. You can specify how many percent to take from the first humoresque and how much from the second humoresque. For example: `/humoresque 40 60` will form a glued humoresque with 40% part from the first humoresque and 60% part from the second humoresque.
+-   `/shabbat` or `/shabbat@Skozu19_bot` - tells you how close the Sabbath is.
+-   `/demotivator` or `/demotivator@Skozu19_bot` - creates a demotivator, you can add a bottom line by passing the string after the command. This command must be triggered by a response to another message
