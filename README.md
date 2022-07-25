@@ -7,11 +7,14 @@ The bot is written with grammyjs and created for the Skozu19 conference. Bot can
 1. Get a free Bot Token from BotFather in Telegram
 2. Clone the repo
    `git clone https://github.com/idrevnii/SkozuBot`
-3. Insall NPM packages
-   `npm install` or `yarn`
-4. Create in root directory .env file with field `BOT_TOKEN` and assign your token from BotFather
-5. Run the bot
-   `npm start` or `yarn start`
+3. Create in root directory .env file with field `BOT_TOKEN` and assign your token from BotFather   
+4. Install NPM packages `npm install` or `yarn`
+5. Run the bot `npm start` or `yarn start`
+
+OR
+
+4. Run `docker-compose up` if you want to use Docker.
+
 
 # Usage
 
