@@ -5,6 +5,7 @@ services:
             context: .
             args:
                 TOKEN: ${TOKEN}
+        restart: unless-stopped
         container_name: "skozubot"
         volumes:
-            - ./../skozulogs:/usr/src/app/logs
+            - ~/storage/skozulogs:/usr/src/app/logs

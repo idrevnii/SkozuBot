@@ -1,12 +1,13 @@
-import got from "got/dist/source"
+import axios from "axios"
 import parse from "node-html-parser"
 import { CurrencyPair } from "../core/models"
 import { logger } from "../logger"
 import { getRandomNumber } from "../misc/utils"
 
 async function get(url: string) {
-    return got(url)
-        .then((resp) => resp.body)
+    return axios
+        .get(url)
+        .then((resp) => resp.data)
         .catch((err) => {
             logger.error(`http error:\n${err}`)
             return
