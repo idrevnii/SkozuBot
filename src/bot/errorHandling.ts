@@ -10,9 +10,11 @@ export function getErrorHandling() {
         if (e instanceof GrammyError) {
             logger.error('Error in request:', e.description)
         } else if (e instanceof HttpError) {
-            logger.error('Could not contact Telegram:', e)
+            logger.error('Could not contact Telegram:')
+            logger.error(e)
         } else {
-            logger.error('Unknown error:', e)
+            logger.error('Unknown error:')
+            logger.error(e)
         }
     }
 }

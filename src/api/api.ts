@@ -64,5 +64,5 @@ export async function getCryptoExchangeRate(): Promise<
     const url = "https://api.binance.com/api/v3/ticker/price"
     const body = await get(url)
     if (!body) return
-    return JSON.parse(body)
+    return body
 }
