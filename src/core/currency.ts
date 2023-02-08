@@ -1,5 +1,6 @@
 import { getExchangeRate, getCryptoExchangeRate } from "../api"
 import { notifyDollarChange } from "../bot/notify"
+import { logger } from "../logger"
 import { CryptoCurrency, Currency, CurrencyPair, TCurrency } from "./models"
 
 const currencyMap: Record<Currency, CurrencyPair> = {
@@ -9,14 +10,17 @@ const currencyMap: Record<Currency, CurrencyPair> = {
 }
 
 export async function getCurrencyRate(currency: Currency) {
-    const rateStr = await getExchangeRate(currencyMap[currency])
-    if (!rateStr) return
-    return parseFloat(rateStr.replace(",", ".").trim()).toFixed(2)
+    const rate = await getExchangeRate(currencyMap[currency])
+    if (typeof rate !== 'string') {
+        logger.error(`Failed to get currency rates, reason:\n${rate.message}`)
+        return
+    }
+    return parseFloat(rate.replace(",", ".").trim()).toFixed(2)
 }
 
 let cryptoCache: Record<string, string>[] | undefined
 
-const cryptoCurrencyMap: Record<CryptoCurrency, string> = {
+const cryptoMap: Record<CryptoCurrency, string> = {
     BTC: "BTCUSDT",
     ETH: "ETHUSDT",
     USDT: "USDTRUB",
@@ -24,13 +28,16 @@ const cryptoCurrencyMap: Record<CryptoCurrency, string> = {
 
 export async function getCryptoCurrencyRate(currency: CryptoCurrency) {
     if (!cryptoCache) {
-        const cryptoList = await getCryptoExchangeRate()
-        if (!cryptoList) return
-        cryptoCache = cryptoList
+        const response = await getCryptoExchangeRate()
+        if (!Array.isArray(response)) {
+            logger.error(`Failed to get crypto rates, reason:\n${response?.message}`)
+            return
+        }
+        cryptoCache = response
         setTimeout(() => (cryptoCache = undefined), 300000)
     }
     const price = cryptoCache.find(
-        (cryptoObj) => cryptoObj.symbol === cryptoCurrencyMap[currency]
+        (crypto) => crypto.symbol === cryptoMap[currency]
     )?.price
     if (!price) return
     return parseFloat(price).toFixed(2)
@@ -41,7 +48,7 @@ export async function getCurrencyRates() {
     for (const currency in currencyMap) {
         rates[currency] = await getCurrencyRate(currency as Currency)
     }
-    for (const currency in cryptoCurrencyMap) {
+    for (const currency in cryptoMap) {
         rates[currency] = await getCryptoCurrencyRate(
             currency as CryptoCurrency
         )

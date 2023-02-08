@@ -5,12 +5,12 @@ import { getPairRandomNumberFromRange } from "../misc/utils"
 const MAX_HUMORESQUE_LENGTH = 100
 
 export async function getHumoresque(args: number[]) {
-    const humoresques = await getHumoresquesFromRandomPage()
-    if (!humoresques) {
-        logger.error("Can't create humoresque, get undefined from web")
+    const response = await getHumoresquesFromRandomPage()
+    if (!Array.isArray(response)) {
+        logger.error(`Can't create humoresque, reason: \n${response.message}`)
         return
     }
-    const smallHumoresques = humoresques.filter(
+    const smallHumoresques = response.filter(
         (hum) => hum.length <= MAX_HUMORESQUE_LENGTH
     )
     const random = getPairRandomNumberFromRange(0, smallHumoresques.length - 1)

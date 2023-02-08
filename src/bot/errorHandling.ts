@@ -8,13 +8,11 @@ export function getErrorHandling() {
         logger.error(`Error while handling update ${ctx.update.update_id}:`)
         const e = error.error
         if (e instanceof GrammyError) {
-            logger.error('Error in request:', e.description)
+            logger.error(`Error in request:\n${e.name}\n${e.message}\n${e.description}`)
         } else if (e instanceof HttpError) {
-            logger.error('Could not contact Telegram:')
-            logger.error(e)
+            logger.error(`Could not contact Telegram:\n${e.name}\n${e.message}`)
         } else {
-            logger.error('Unknown error:')
-            logger.error(e)
+            logger.error(`Unknown error:\n${JSON.stringify(e)}`)
         }
     }
 }
